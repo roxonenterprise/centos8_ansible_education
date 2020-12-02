@@ -1,0 +1,45 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Set timezone to Europe/Ljubljana
+    timezone:
+      name: Europe/Ljubljana
+    register: timezone
+
+  - name: Restart crond
+    service:
+      name: crond
+      state: restarted
+    when: timezone.changed
+
+  - name: Ensure ntpdate isn't installed
+    package:
+      name: "ntpdate"
+      state: absent
+
+  - name: Install chrony
+    package:
+      name: chrony
+      state: present
+
+  - name: Ensure chronyd service is active and enabled
+    service:
+      name: chronyd
+      state: started
+      enabled: yes
+
+  - name: Change ntp pool to ntp.t-2.net
+    lineinfile:
+      path: /etc/chrony.conf
+      regexp: '^pool 2.centos'
+      line: pool ntp.t-2.net iburst
+    register: ntp
+
+  - name: Restart chronyd service
+    service:
+      name: chronyd
+      state: restarted
+    when: ntp.changed

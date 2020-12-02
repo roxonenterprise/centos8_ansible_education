@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Install crony package
+    package:
+      name: chrony
+      state: present
+

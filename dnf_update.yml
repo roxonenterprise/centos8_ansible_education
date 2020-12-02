@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update packages using dnf
+    dnf:
+      name: "*"
+      state: latest
