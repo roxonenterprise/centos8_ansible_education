@@ -1,4 +1,4 @@
-edusrv ansible_host=suroxon@84.255.209.55 ansible_port=2808
+suroxon@84.255.209.55
 
 suroxon@192.168.56.11
 suroxon@192.168.56.12
